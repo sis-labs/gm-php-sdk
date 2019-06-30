@@ -1,0 +1,34 @@
+docs_dir: docs/book
+site_dir: docs/html
+pages:
+    - index.md
+    - Intro: intro.md
+    - Contact: contact.md
+    - Reference:
+        - Messages:
+            - "Intro and Usage": message/intro.md
+            - "Key Generation": message/key-generation.md
+            - "Validation": message/validation.md
+            - "Notes": message/notes.md
+        - Creation:
+            - Usage: creation/intro.md
+            - Key:
+                - "Key Options": creation/key-options.md
+            - "Validation": creation/validation.md
+        - Validation:
+            - Intro: validation/intro.md
+            - "Issuer validation": validation/issuer-validiation.md
+            - Note: validation/note.md
+        - Tools:
+            - "Best practices": tools/best-practices.md
+            - "Key generation": tools/key-generation.md
+            - "Key renewal": tools/key-renewal.md
+        - Key:
+            - "Intro": key/intro.md
+            - "Documentation & reference": key/doc.md
+        - "Reading JWT": read.md
+        - "Validating Token": token-validation.md
+site_name: php-gm-jwt
+site_description: php-gm-jwt
+repo_url: 'https://github.com/groupemutuel/php-gm-jwt'
+copyright: 'Copyright (c) 2018 <a href="https://www.groupemutuel.ch/">Groupe Mutuel</a>'
