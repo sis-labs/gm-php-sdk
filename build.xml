@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="gm-jwt" default="check">
+  <target name="check">
+    <echo msg="This message confirm that the system works. However, you have to specify a valid " />
+  </target>
+  <target name="generate-private-key">
+    <echo msg="generate a new private key in the data directory" />
+    <exec command="openssl genrsa -des3 -out data/key.pem 4096" dir="."/>
+  </target>
+  <target name="generate-public-key">
+    <echo msg="generate a new private key in the data directory" />
+    <exec command="openssl rsa -in data/key.pem -outform PEM -pubout -out data/key-pub.pem" dir="."/>
+  </target>
+</project>

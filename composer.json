@@ -29,7 +29,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^6.5",
-        "mockery/mockery": "^1.2"
+        "mockery/mockery": "^1.2",
+        "phing/phing": "^2.16"
     },
     "autoload": {
         "psr-4": {
@@ -46,6 +47,8 @@
             "@cs-check",
             "@test"
         ],
+        "generate-private-key": "phing generate-private-key",
+        "generate-public-key": "phing generate-public-key",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
