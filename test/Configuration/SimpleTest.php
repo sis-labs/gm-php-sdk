@@ -41,7 +41,7 @@ class SimpleTest extends TestCase {
         $clientId = $configuration->get(BaseConfiguration::CLIENT_ID);
 
         // THEN
-        $this->assetNull($clientId);
+        $this->assertNull($clientId);
     }
 
     // this can be simplify, I just check functional capabilities of such stuff
@@ -54,8 +54,8 @@ class SimpleTest extends TestCase {
 
     public function testScopeSuccess() {
         $this->perform([
-            BaseConfiguration::SCOPE => 'ALL'
-        ], 'getScopes', function($scopes) use ($this) {
+            BaseConfiguration::SCOPES => 'ALL'
+        ], 'getScopes', function($scopes) {
             $this->assertEquals('ALL', $scopes);
         });
     }
@@ -63,7 +63,7 @@ class SimpleTest extends TestCase {
     public function testBaseURI() {
         $this->perform([
             BaseConfiguration::BASE_URI => 'http://localhost:3000'
-        ], 'getBaseURI' ,function($baseUri) use ($this) {
+        ], 'getBaseURI' ,function($baseUri) {
             $this->assertEquals('http://localhost:3000', $baseUri);
         });
     }
@@ -71,7 +71,7 @@ class SimpleTest extends TestCase {
     public function testOAuthServerBaseURI() {
         $this->perform([
             BaseConfiguration::OAUTH_SERVER_URI => 'http://localhost:3000'
-        ], 'getOAuthServerBaseURI', function($uri) use ($this) {
+        ], 'getOAuthServerBaseURI', function($uri) {
             $this->assertEquals('http://localhost:3000', $uri);
         });
     }
@@ -79,7 +79,7 @@ class SimpleTest extends TestCase {
     public function testClientId() {
         $this->perform([
             BaseConfiguration::CLIENT_ID => 'my_client_id'
-        ], 'getClientId', function($clientId) use ($this) {
+        ], 'getClientId', function($clientId) {
             $this->assertEquals('my_client_id', $clientId);
         });
     }
@@ -87,7 +87,7 @@ class SimpleTest extends TestCase {
     public function testClientSecret() {
         $this->perform([
             BaseConfiguration::CLIENT_SECRET => 'my_client_secret'
-        ], 'getClientSecret', function($clientSecret) use ($this) {
+        ], 'getClientSecret', function($clientSecret) {
             $this->assertEquals('my_client_secret', $clientSecret);
         });
     }
@@ -95,7 +95,7 @@ class SimpleTest extends TestCase {
     public function testIssuer() {
         $this->perform([
             BaseConfiguration::ISSUER => 'issuer_test'
-        ], 'getIssuer', function($issuer) use ($this) {
+        ], 'getIssuer', function($issuer) {
             $this->assertEquals('issuer_test', $issuer);
         });
     }
@@ -103,7 +103,7 @@ class SimpleTest extends TestCase {
     public function testAudience() {
         $this->perform([
             BaseConfiguration::AUDIENCE => 'test_audience'
-        ], 'getAudience', function($audience) use ($this) {
+        ], 'getAudience', function($audience) {
             $this->assertEquals('test_audience', $audience);
         });
     }
@@ -111,7 +111,7 @@ class SimpleTest extends TestCase {
     public function testGmPublicKey() {
         $this->perform([
             BaseConfiguration::GM_PUBLIC_KEY => '--------BEGIN-PUBLIC-KEY--------'
-        ], 'getGmPublicKey', function($key) use ($this) {
+        ], 'getGmPublicKey', function($key) {
             $this->assertEquals('--------BEGIN-PUBLIC-KEY--------', $key);
         });
     }
@@ -119,7 +119,7 @@ class SimpleTest extends TestCase {
     public function testPrivateKey() {
         $this->perform([
             BaseConfiguration::PRIVATE_KEY =>  '--------BEGIN-PRIVATE-KEY--------'
-        ], 'getPrivateKey', function($key) use ($this) {
+        ], 'getPrivateKey', function($key) {
             $this->assertEquals('--------BEGIN-PRIVATE-KEY--------', $key);
         });
     }
@@ -127,7 +127,7 @@ class SimpleTest extends TestCase {
     public function testPassphrase() {
         $this->perform([
             BaseConfiguration::PASSPHRASE => 'testtest'
-        ], 'getPassphrase', function($passphrase) use ($this) {
+        ], 'getPassphrase', function($passphrase) {
             $this->assertEquals('testtest', $passphrase);
         });
     }
@@ -135,7 +135,7 @@ class SimpleTest extends TestCase {
     public function testTimeout() {
         $this->perform([
             BaseConfiguration::TIMEOUT => 20
-        ], 'getTimeout', function($timeout) use ($this) {
+        ], 'getTimeout', function($timeout) {
             $this->assertEquals(20, $timeout);
         });
     }

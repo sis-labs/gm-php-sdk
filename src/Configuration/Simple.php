@@ -2,7 +2,7 @@
 
 namespace Gma\ApiClient\Configuration;
 
-class Simple extends AbstractConfiguration implements Conrfiguration {
+class Simple extends AbstractConfiguration implements ConfigurationInterface {
 
   private $configuration = [];
   
@@ -18,7 +18,7 @@ class Simple extends AbstractConfiguration implements Conrfiguration {
   }
 
   public function getOAuthServerBaseURI() {
-      
+    return $this->configuration[self::OAUTH_SERVER_URI];  
   }
   
   public function getBaseURI() {
