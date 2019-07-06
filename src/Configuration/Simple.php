@@ -2,7 +2,7 @@
 
 namespace Gma\ApiClient\Configuration;
 
-interface Simple implements Conrfiguration {
+class Simple extends AbstractConfiguration implements Conrfiguration {
 
   private $configuration = [];
   
@@ -10,46 +10,54 @@ interface Simple implements Conrfiguration {
     $this->configuration = $conf;
   }
   
-  function get($key) {
+  public function get($key, $default = null) {
     if(array_key_exists($key, $this->configuration)) {
       return $this->configuration[$key];
     }
-    throw new \Exception("Key not found");
+    return $default;
+  }
+
+  public function getOAuthServerBaseURI() {
+      
   }
   
-  function getBaseURI() {
-    return $this->configuration['baseUri'];
+  public function getBaseURI() {
+    return $this->configuration[self::BASE_URI];
   }
   
-  function getClientId() {
-    return $this->configuration['clientId'];
+  public function getClientId() {
+    return $this->configuration[self::CLIENT_ID];
   }
   
-  function getClientSecret() {
-    return $this->configuration['clientSecret'];
+  public function getClientSecret() {
+    return $this->configuration[self::CLIENT_SECRET];
   }
   
-  function getIssuer() {
-    return $this->configuration['issuer'];
+  public function getIssuer() {
+    return $this->configuration[self::ISSUER];
   }
   
-  function getAudience() {
-    return $this->configuration['audience'];
+  public function getAudience() {
+    return $this->configuration[self::AUDIENCE];
   }
   
-  function getGmPublicKey() {
-    return $this->configuration['gmPublicKey'];
+  public function getGmPublicKey() {
+    return $this->configuration[self::GM_PUBLIC_KEY];
   }
   
-  function getPrivateKey() {
-    return $this->configuration['privateKey'];
+  public function getPrivateKey() {
+    return $this->configuration[self::PRIVATE_KEY];
   }
   
-  function getPassphrase() {
-    return $this->configuration['passphrase'];
+  public function getPassphrase() {
+    return $this->configuration[self::PASSPHRASE];
   }
   
-  function getTimeout() {
-    return $this->configuration['timeout'];
+  public function getTimeout() {
+    return $this->configuration[self::TIMEOUT];
+  }
+
+  public function getScopes() {
+    return $this->configuration[self::SCOPES];
   }
 }
