@@ -39,7 +39,7 @@ EOD;
   public function testClient() {
     // GIVEN
     $issuer = "server.mydom.com";
-    $audience = "gm-rest-api-name";
+    $audiecne = "gm-rest-api-name";
     $issuedAt = 1561917071;
     $noBefore = 1561910000;
     $token = array(
