@@ -2,6 +2,7 @@
 
 use Gma\ApiClient\Client;
 use Gma\ApiClient\Configuration\ConfigurationBuilder;
+use Gma\ApiClient\Storage\StorageFactory;
 
 // fake implementation of a logger, please check MonoLog or such implementation like that
 $myLogger = new \stdClass();
