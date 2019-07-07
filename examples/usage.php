@@ -42,6 +42,8 @@ $storageFactoryConfiguration = [
     // check the documentation of this implementation to gather information about how to correctly
     // configure it and what is his real behavior.
     'type': 'session',
+    'security' => 'rsa',
+    'configuration' => $configuration,
     'key': 'access_token',
     'auto_erase': true
   ],
@@ -54,8 +56,8 @@ $storageFactoryConfiguration = [
     'type' => 'file',
     'security' => 'rsa',
     'configuration' => $configuration,
-    'auto_erase' => true,
-    'auto_renew' => true
+    'key': 'refresh_token',
+    'auto_erase' => true
   ],
 ];
 $tokenStorageFactory = StorageFactory::compose($configuration, $storageFactoryConfiguration);
