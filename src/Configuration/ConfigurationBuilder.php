@@ -8,8 +8,12 @@ namespace Gma\ApiClient\Configuration;
 class ConfigurationBuilder {
   private $data = [];
   
-  public function __construct() {
+  private function __construct() {
     // nothing to do right now
+  }
+  
+  public static function create() {
+    return new self();
   }
   
   public function setBaseURI($baseUri): ConfigurationBuilder {
