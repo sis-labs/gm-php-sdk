@@ -25,6 +25,5 @@ abstract class Base {
   public function __construct(Configuration $configuration, $httpClient) {
     $this->configuration = $configuration;
     $this->httpClient = $httpClient;
-    //$this->client = new GuzzleHttp\Client();
   }
 }

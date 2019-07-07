@@ -10,10 +10,12 @@ use Gma\ApiClient\Storage\ITokenWriter;
 use Gma\ApiClient\Storage\DecorableTokenReader;
 use Gma\ApiClient\Storage\DecorableTokenWriter;
 use Gma\ApiClient\Configuration\ConfigurationInterface;
+use League\Container\Container as DIContainer;
 
 class StorageFactoryTest extends TestCase {
 
-  const privateKey = <<<EOD-----BEGIN RSA PRIVATE KEY-----
+  const privateKey = <<<EOD
+  -----BEGIN RSA PRIVATE KEY-----
 MIICXAIBAAKBgQC8kGa1pSjbSYZVebtTRBLxBz5H4i2p/llLCrEeQhta5kaQu/Rn
 vuER4W8oDH3+3iuIYW4VQAzyqFpwuzjkDI+17t5t0tyazyZ8JXw+KgXTxldMPEL9
 5+qVhgXvwtihXC1c5oGbRlEDvDF6Sa53rcFVsYJ4ehde/zUxo6UvS7UrBQIDAQAB
@@ -30,7 +32,8 @@ B2zNzvrlgRmgBrklMTrMYgm1NPcW+bRLGcwgW2PTvNM=
 -----END RSA PRIVATE KEY-----
 EOD;
 
-    const publicKey = <<<EOD-----BEGIN PUBLIC KEY-----
+    const publicKey = <<<EOD
+    -----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8kGa1pSjbSYZVebtTRBLxBz5H
 4i2p/llLCrEeQhta5kaQu/RnvuER4W8oDH3+3iuIYW4VQAzyqFpwuzjkDI+17t5t
 0tyazyZ8JXw+KgXTxldMPEL95+qVhgXvwtihXC1c5oGbRlEDvDF6Sa53rcFVsYJ4
@@ -38,7 +41,8 @@ ehde/zUxo6UvS7UrBQIDAQAB
 -----END PUBLIC KEY-----
 EOD;
 
-  const gmPublickKey = <<<EOD-----BEGIN PUBLIC KEY-----
+  const gmPublickKey = <<<EOD
+  -----BEGIN PUBLIC KEY-----
 MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEApx7HorgmJ3t5fYvmqkZN
 LJN9cRsHP7RHiT2gyVI62ObwDPJPkcSRW6ubVZ4rXZ1QmPMczFUc0zU/9tdkHpT8
 UzIz+4PPBQhIBTB2xsMfbeHXqYysd4xVhnpZ372+/lT5FsPuvxHmwUM7DHF2Tvgk
@@ -60,7 +64,7 @@ EOD;
 
   public function testCompose() {
     // GIVEN
-    $configuration = Mockery::mock('ConfigurationInterface');
+    $configuration = Mockery::mock('Gma\ApiClient\Configuration\ConfigurationInterface');
     /*
     $configuration->shouldReceive([
       'getGmPublicKey' => self::gmPublickKey,
@@ -71,27 +75,35 @@ EOD;
 
     $storageFactoryConfiguration = [
       'access_token' => [
-        'type': 'session',
+        'type' => 'session',
         'security' => 'none',
         'configuration' => $configuration,
-        'key': 'access_token',
-        'auto_erase': true
+        'key' => 'access_token',
+        'auto_erase' => true
       ],
       'refresh_token' => [
         'type' => 'file',
         'security' => 'rsa',
-        'configuration' => $configuration,
-        'key': 'refresh_token',
+        'key' => 'refresh_token',
         'auto_erase' => true
       ],
     ];
     
+    $registry = new DIContainer();
+    $registry->add('configuration', $configuration);
+    $registry->add('sessionTokenReader', SessionTokenReader::class);
+    $registry->add('sessionTokenWriter', SessionTokenWiter::class);
+    $registry->add('fileTokenReader', FileTokenReader::class);
+    $registry->add('fileTokenReader', FileTokenWiter::class);
+    $registry->add('rsaTokenReader', RSATokenReader::class);
+    $registry->add('rsaTokenWriter', RSATokenWiter::class);
+    
     // WHEN
-    $storageFactory = StorageFactory::compose($configuration, $storageFactoryConfiguration);
-    $accessTokenReader = $storageFactory->getAccessTokenReader();
-    $accessTokenWriter = $storageFactory->getAccessTokenWriter();
-    $refreshTokenReader = $storageFactory->getRefreshTokenReader();
-    $refreshTokenWriter = $storageFactory->getRefreshTokenWriter();
+    $storageFactory = StorageFactory::getInstance()->compose($configuration, $storageFactoryConfiguration, $registry);
+    $accessTokenReader = $storageFactory->getAccessTokenFactory()->getReader();
+    $accessTokenWriter = $storageFactory->getAccessTokenFactory()->getWriter();
+    $refreshTokenReader = $storageFactory->getRefreshTokenFactory()->getReader();
+    $refreshTokenWriter = $storageFactory->getRefreshTokenFactory()->getWriter();
     
     // THEN
     $this->assertInstanceOf(ITokenReader::class, $accessTokenReader);

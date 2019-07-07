@@ -31,6 +31,30 @@ $configuration = ConfigurationBuilder::create()
   ->build();
 
 /*
+ * We are using a simple IOC pattern. You should provide your adapter to your DI system, write your
+ * own registry or using our simple implementation.
+ *
+ * In the registry, the alias of the instance is pretty important and is calculate considering the
+ * kind of storage defined in the configuration and the intent of the implementation. For instance,
+ * if we want to define the token reader (TokenReaderInterface) to use with a type 'session', we
+ * use 'sessionTokenReader' as alias.
+ * To compose an alias, simply take the key of the item in the configuration key, the name of the class
+ * with the 'Interface' stripped out.
+ * The none key is, by default, associate to the NullDecorator which returns what it takes in parameter.
+ * Pay attention, objects registered in the store are TokenReaderInterface implementation wrapped
+ * with a DecorableTokenReader.
+ * The NullTokenReader returns an empty string, the NullTokenWriter writes what it receives as parameter.
+ */
+$registry = new DIContainer();
+$registry->add('sessionTokenReader', SessionTokenReader::class);
+$registry->add('sessionTokenWriter', SessionTokenWiter::class);
+$registry->add('fileTokenReader', FileTokenReader::class);
+$registry->add('fileTokenReader', FileTokenWiter::class);
+$registry->add('rsaTokenReader', RSATokenReader::class);
+$registry->add('rsaTokenWriter', RSATokenWiter::class);
+// ...
+
+/*
  * The client is using store to put tokens into or fetch token from.
  *
  * The system come with default implementation which are used by default (take care, default
@@ -42,11 +66,11 @@ $storageFactoryConfiguration = [
     // each type of storage has its own configuration, for now, we are only provided the session storage
     // check the documentation of this implementation to gather information about how to correctly
     // configure it and what is his real behavior.
-    'type': 'session',
-    'security' => 'rsa',
+    'type' => 'session',
+    'security' => 'none',
     'configuration' => $configuration,
-    'key': 'access_token',
-    'auto_erase': true
+    'key' => 'access_token',
+    'auto_erase' => true
   ],
   'refresh_token' => [
     // The only refresh token storage method we offer is file for now. It has several limitation and
@@ -56,12 +80,12 @@ $storageFactoryConfiguration = [
     // DecorableTokenReader / DecorableTokenWriter.
     'type' => 'file',
     'security' => 'rsa',
-    'configuration' => $configuration,
-    'key': 'refresh_token',
+    // configuration is optional, it will be fill by the process
+    'key' => 'refresh_token',
     'auto_erase' => true
   ],
 ];
-$tokenStorageFactory = StorageFactory::compose($configuration, $storageFactoryConfiguration);
+$tokenStorageFactory = StorageFactory::getInstance()->compose($configuration, $storageFactoryConfiguration, $registry);
 
 // you can tweak the client to push extra configuration like reporting
 $options = ['logging' => 
