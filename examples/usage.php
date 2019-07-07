@@ -52,7 +52,7 @@ $storageFactoryConfiguration = [
     // isn't production ready in the mind of authors.
     // You can benefit of some layers of the implementation since we are using a decoration system
     // to read token. Check documentation / implementation of the TokenReaderInterface and the
-    // DecorableTokenReader.
+    // DecorableTokenReader / DecorableTokenWriter.
     'type' => 'file',
     'security' => 'rsa',
     'configuration' => $configuration,
